@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <p align="center">
   <img src="https://softdesign.com.br/wp-content/themes/bones/library/images/logotipo.svg" alt="Softdesign logo" />
 </p>
@@ -124,3 +125,7 @@ Instalar as extensões no seu **visual studio code**:
 - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint).
 
 - [GitLens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens).
+=======
+# DesafioApi
+Backend Desafio
+>>>>>>> aa3d62b61a780417b1a6ed4aad2d404f29814adb
