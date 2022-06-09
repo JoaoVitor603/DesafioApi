@@ -12,7 +12,6 @@ export class UserRepository extends Repository<Users> {
     return user;
   }
 
-  // Padrão o parametro id era tipo String
   public async findById(id: string): Promise<Users | undefined> {
     const user = await this.findOne({
       where: {

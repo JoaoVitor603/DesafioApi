@@ -7,6 +7,7 @@ import ApiError from '../utils/apiError.utils';
 interface IRequest {
   name: string;
   cpf: string;
+  birthdate: Date;
   password: string;
   observation: string;
   admin: boolean;
@@ -16,9 +17,9 @@ class CreateUserService {
   public async execute({
     name,
     cpf,
+    birthdate,
     password,
     observation,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     admin,
   }: IRequest): Promise<Users> {
     const usersRepository = getCustomRepository(UserRepository);
@@ -28,14 +29,15 @@ class CreateUserService {
       throw new ApiError(401, true, 'CPF já cadastrado');
     }
 
-    const hashedPassowrd = await hash(password, 8);
+    const hashedPassowrd = await hash(password, 7);
 
     const user = usersRepository.create({
       name,
       cpf,
+      birthdate,
       password: hashedPassowrd,
       observation,
-      admin: false,
+      admin,
     });
 
     await usersRepository.save(user);

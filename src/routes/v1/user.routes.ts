@@ -1,52 +1,34 @@
 import { Router } from 'express';
-
+import { celebrate, Joi, Segments } from 'celebrate';
 import UserController from '../../controllers/user.controller';
 import isAuthenticated from '../../middlewares/isAuthenticated';
-// import  { createProductHandler } from '../../controllers/user.controller';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-// // import requireUser from '../../middlewares/requireUser';
-// // import validateResource from '../../middlewares/validateResource';
 
-// // import { createProductSchema } from '../../schemas/product.schema';
+import isAdmin from '../../middlewares/authAdmin';
 
 const UserRouter = Router();
 
 const userController = new UserController();
 
 UserRouter.get('/', isAuthenticated, userController.index);
-UserRouter.get('/:id', userController.show);
-UserRouter.post('/', userController.create);
-UserRouter.put('/:id', userController.edit);
-UserRouter.delete('/:id', userController.delete);
+UserRouter.get('/:id', isAuthenticated, userController.show);
+UserRouter.put('/:id', isAdmin, userController.edit);
+UserRouter.delete('/:id', isAdmin, userController.delete);
 
-/**
- *
- * '/api/products/{productId}':
- *  get:
- *     tags:
- *     - Products
- *     summary: Get a single product by the productId
- *     security:
- *      - bearerAuth: []
- *     parameters:
- *      - name: productId
- *        in: path
- *        description: The id of the product
- *        required: true
- *     responses:
- *       200:
- *         description: Success
- *         content:
- *          application/json:
- *           schema:
- *              $ref: '#/components/schemas/Product'
- *       404:
- *         description: Product not found
- */
-
-// routes.route('/').post(
-//   // [requireUser, validateResource(createProductSchema)],
-//   [validateResource(createProductSchema)],
-//   createProductHandler
+UserRouter.post(
+  '/',
+  celebrate({
+    [Segments.BODY]: {
+      name: Joi.string().required(),
+      cpf: Joi.string().required(),
+      birthdate: Joi.string().required(),
+      password: Joi.string().required(),
+      observation: Joi.string(),
+      admin: Joi.bool(),
+    },
+  }),
+  isAdmin,
+  userController.create
+);
+// Utilizar Celebrate com o metodo put causa erro Error: data and salt arguments required
 
 export default UserRouter;

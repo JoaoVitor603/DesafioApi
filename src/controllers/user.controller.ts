@@ -8,8 +8,6 @@ import ShowUserService from '../services/ShowUserService';
 export default class UserController {
   public async index(request: Request, response: Response): Promise<Response> {
     const ListUser = new ListUsersService();
-    //  console.log(request.user.id);
-    // const { admin } = request.user.admin;
 
     const users = await ListUser.execute();
 
@@ -25,13 +23,14 @@ export default class UserController {
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
-    const { cpf, password, name, observation, admin } = request.body;
+    const { name, cpf, birthdate, password, observation, admin } = request.body;
     const createUser = new CreateUserService();
 
     const user = await createUser.execute({
-      cpf,
-      password,
       name,
+      cpf,
+      birthdate,
+      password,
       observation,
       admin,
     });
@@ -39,7 +38,7 @@ export default class UserController {
   }
 
   public async edit(request: Request, response: Response): Promise<Response> {
-    const { cpf, password, name, observation, admin } = request.body;
+    const { cpf, password, birthdate, name, observation, admin } = request.body;
     const { id } = request.params;
 
     const editUser = new EditUserService();
@@ -48,6 +47,7 @@ export default class UserController {
       id,
       name,
       cpf,
+      birthdate,
       password,
       observation,
       admin,

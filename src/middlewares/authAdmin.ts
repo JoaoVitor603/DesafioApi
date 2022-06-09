@@ -1,31 +1,43 @@
-// import { NextFunction, Request, Response } from 'express';
-// import { get } from 'lodash';
-// import { getCustomRepository } from 'typeorm';
-// import Users from '../database/entities/User.Entity';
-// import { UserRepository } from '../database/repositories/UserRepository';
-// import ApiError from '../utils/apiError.utils';
+import { NextFunction, Request, Response } from 'express';
+import { verify } from 'jsonwebtoken';
+import ApiError from '../utils/apiError.utils';
+import config from '../config/config';
 
-// interface IRequest {
-//   id: string;
-//   admin: Users;
-//   password: string;
-// }
+interface TokenPayload {
+  admin: boolean;
+  sub: string;
+}
 
-// export default  function authAdmin(
-//   id: string,
-//   admin: boolean,
-//   response: Response,
-//   request: Request,
-//   next: NextFunction
-// ): void {
-//   const usersRepository = getCustomRepository(UserRepository);
+export default function isAdmin(
+  request: Request,
+  response: Response,
+  next: NextFunction
+): void {
+  const authHeader = request.headers.authorization;
 
-//   const userAdmin =  request.
-//   try {
+  if (!authHeader) {
+    throw new ApiError(402, true, 'JWT Token is missing.');
+  }
+  // Bearer sdlkfjsldkfjlsjfffdklfjdflksjflkjfdlk3405905
+  const [, token] = authHeader.split(' ');
 
-//     userAdmin. = true;
+  try {
+    const decodedToken = verify(token, config.jwtSecret);
 
-//     return next;
-//   }
+    const { sub, admin } = decodedToken as TokenPayload;
 
-// }
+    request.user = {
+      id: sub,
+      // eslint-disable-next-line object-shorthand
+      admin: admin,
+    };
+
+    if (request.user.admin === true) {
+      return next();
+    }
+    // Sem a esse api error a requisição fica sendo enviada sempre
+    throw new ApiError(402, true, '');
+  } catch {
+    throw new ApiError(402, true, 'User is not admin.');
+  }
+}

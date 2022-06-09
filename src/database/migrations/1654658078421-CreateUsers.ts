@@ -28,6 +28,10 @@ export class User1654658078421 implements MigrationInterface {
             isUnique: true,
           },
           {
+            name: 'birthdate',
+            type: 'date',
+          },
+          {
             name: 'password',
             type: 'varchar',
           },

@@ -7,6 +7,7 @@ interface TokenPayload {
   iat: number;
   exp: number;
   sub: string;
+  admin: boolean;
 }
 
 export default function isAuthenticated(
@@ -26,11 +27,12 @@ export default function isAuthenticated(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const decodedToken = verify(token, config.jwtSecret);
 
-    const { sub } = decodedToken as TokenPayload;
+    const { sub, admin } = decodedToken as TokenPayload;
 
-    console.log(decodedToken);
     request.user = {
       id: sub,
+      // eslint-disable-next-line object-shorthand
+      admin: admin,
     };
 
     return next();

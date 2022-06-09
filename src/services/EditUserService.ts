@@ -6,6 +6,7 @@ import ApiError from '../utils/apiError.utils';
 interface IRequest {
   id: string;
   cpf: string;
+  birthdate: Date;
   name: string;
   password: string;
   observation: string;
@@ -16,6 +17,7 @@ class EditUserService {
   public async execute({
     id,
     cpf,
+    birthdate,
     password,
     name,
     observation,
@@ -30,6 +32,7 @@ class EditUserService {
 
     user.name = name;
     user.cpf = cpf;
+    user.birthdate = birthdate;
     user.password = password;
     user.admin = admin;
     user.observation = observation;

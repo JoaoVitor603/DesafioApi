@@ -8,7 +8,7 @@ import { UserRepository } from '../../database/repositories/UserRepository';
 import ApiError from '../../utils/apiError.utils';
 
 interface IRequest {
-  cpf: string;
+  id: string;
   password: string;
 }
 
@@ -17,11 +17,10 @@ interface IResponse {
   token: string;
 }
 
-// Alterar a tipagem da promise após a criação da Token
 class CreateUserSessionService {
-  public async execute({ cpf, password }: IRequest): Promise<IResponse> {
+  public async execute({ id, password }: IRequest): Promise<IResponse> {
     const usersRepository = getCustomRepository(UserRepository);
-    const user = await usersRepository.findByCpf(cpf);
+    const user = await usersRepository.findById(id);
 
     if (!user) {
       throw new ApiError(401, false, 'Incorrect cpf/password .');
@@ -33,12 +32,7 @@ class CreateUserSessionService {
       throw new ApiError(401, false, 'Incorrect password.');
     }
 
-    const token = signJwt({});
-
-    // const token = sign({}, config.jwtSecret, {
-    //   subject: user.id,
-    //   expiresIn: '1d',
-    // });
+    const token = signJwt({ sub: user.id, admin: user.admin });
 
     return { user, token };
   }
