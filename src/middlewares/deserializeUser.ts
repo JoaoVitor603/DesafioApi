@@ -12,7 +12,7 @@ const deserializeUser = async (
     ''
   );
 
-  if (!accessToken) {
+  if (accessToken) {
     return next();
   }
 

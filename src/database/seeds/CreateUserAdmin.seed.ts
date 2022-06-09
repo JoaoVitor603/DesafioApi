@@ -16,9 +16,8 @@ export default class CreateProducts implements Seeder {
             observation: 'usuário criado automaticamente',
             admin: true,
             password: 'admin',
-            cpf: '000.000.000-00'
+            cpf: '000.000.000-00',
           },
-
         ])
         .execute();
     }

@@ -3,7 +3,7 @@ import Base from './Base.Entity';
 
 @Entity('users')
 export default class Users extends Base {
-  @Column({ length: 100 })
+  @Column({ length: 50 })
   public name: string;
 
   @Column({ length: 14 })
@@ -12,10 +12,9 @@ export default class Users extends Base {
   @Column({ length: 30 })
   public password: string;
 
-  @Column({ length: 400, nullable: true })
+  @Column({ length: 100, nullable: true })
   public observation: string;
 
-  @Column ()
-  public admin: boolean;
-
+  @Column({ nullable: false })
+  admin: boolean;
 }
