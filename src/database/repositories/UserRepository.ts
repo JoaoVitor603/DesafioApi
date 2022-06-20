@@ -20,13 +20,4 @@ export class UserRepository extends Repository<Users> {
     });
     return user;
   }
-
-  public async findByAdmin(admin: boolean): Promise<Users | undefined> {
-    const user = await this.findOne({
-      where: {
-        admin,
-      },
-    });
-    return user;
-  }
 }

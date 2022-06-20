@@ -9,8 +9,8 @@ const UserRouter = Router();
 
 const userController = new UserController();
 
-UserRouter.get('/', isAuthenticated, userController.index);
-UserRouter.get('/:id', isAuthenticated, userController.show);
+UserRouter.get('/', userController.index);
+UserRouter.get('/:id', userController.show);
 UserRouter.put('/:id', isAdmin, userController.edit);
 UserRouter.delete('/:id', isAdmin, userController.delete);
 
@@ -26,7 +26,7 @@ UserRouter.post(
       admin: Joi.bool(),
     },
   }),
-  isAdmin,
+
   userController.create
 );
 // Utilizar Celebrate com o metodo put causa erro Error: data and salt arguments required

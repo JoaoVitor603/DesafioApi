@@ -38,17 +38,13 @@ export default class UserController {
   }
 
   public async edit(request: Request, response: Response): Promise<Response> {
-    const { cpf, password, birthdate, name, observation, admin } = request.body;
+    const { observation, admin } = request.body;
     const { id } = request.params;
 
     const editUser = new EditUserService();
 
     const user = await editUser.execute({
       id,
-      name,
-      cpf,
-      birthdate,
-      password,
       observation,
       admin,
     });

@@ -1,28 +1,17 @@
 import { getCustomRepository } from 'typeorm';
+import { hash } from 'bcrypt';
 import Users from '../database/entities/User.Entity';
 import { UserRepository } from '../database/repositories/UserRepository';
 import ApiError from '../utils/apiError.utils';
 
 interface IRequest {
   id: string;
-  cpf: string;
-  birthdate: Date;
-  name: string;
-  password: string;
   observation: string;
   admin: boolean;
 }
 
 class EditUserService {
-  public async execute({
-    id,
-    cpf,
-    birthdate,
-    password,
-    name,
-    observation,
-    admin,
-  }: IRequest): Promise<Users> {
+  public async execute({ id, observation, admin }: IRequest): Promise<Users> {
     const usersRepository = getCustomRepository(UserRepository);
     const user = await usersRepository.findOne(id);
 
@@ -30,10 +19,6 @@ class EditUserService {
       throw new ApiError(401, false, 'Usuário não encontrado por id');
     }
 
-    user.name = name;
-    user.cpf = cpf;
-    user.birthdate = birthdate;
-    user.password = password;
     user.admin = admin;
     user.observation = observation;
 
