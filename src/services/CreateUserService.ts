@@ -9,7 +9,7 @@ interface IRequest {
   cpf: string;
   birthdate: Date;
   password: string;
-  observation: string;
+  observation?: string;
   admin: boolean;
 }
 

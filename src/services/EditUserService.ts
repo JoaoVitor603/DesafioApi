@@ -1,5 +1,4 @@
 import { getCustomRepository } from 'typeorm';
-import { hash } from 'bcrypt';
 import Users from '../database/entities/User.Entity';
 import { UserRepository } from '../database/repositories/UserRepository';
 import ApiError from '../utils/apiError.utils';

@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-
 <p align="center">
   <img src="https://softdesign.com.br/wp-content/themes/bones/library/images/logotipo.svg" alt="Softdesign logo" />
 </p>

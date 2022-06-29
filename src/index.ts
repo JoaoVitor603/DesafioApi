@@ -5,13 +5,10 @@ import morgan from 'morgan';
 import routes from './routes/v1';
 import 'express-async-errors';
 import 'reflect-metadata';
-// import helmet from 'helmet';
-// import compression from 'compression';
 import ApiError from './utils/apiError.utils';
 import config, { environments } from './config/config';
 import logger from './config/logger';
 import database from './config/database';
-// import routes from './routes/server';
 import swaggerDocs from './config/swagger';
 
 const app = express();
@@ -22,7 +19,6 @@ app.use(express.json());
 app.use(routes);
 
 app.listen(3333, () => {
-  // eslint-disable-next-line no-console
   console.log('Server started on port 3333! 🏆');
 });
 
@@ -39,11 +35,7 @@ app.listen(config.port, async () => {
 
   await database();
 
-  //   routes(app);
-
   if (config.env !== environments.PRODUCTION) {
     swaggerDocs(app, config.publicUrl, config.port);
   }
 });
-
-// export default app;
