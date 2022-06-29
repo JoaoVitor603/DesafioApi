@@ -1,8 +1,9 @@
 import { hash } from 'bcrypt';
+import { StatusCodes } from 'http-status-codes';
 import { getCustomRepository } from 'typeorm';
 import Users from '../database/entities/User.Entity';
 import { UserRepository } from '../database/repositories/UserRepository';
-import ApiError from '../utils/apiError.utils';
+import AppError from '../utils/AppError';
 
 interface IRequest {
   name: string;
@@ -26,7 +27,7 @@ class CreateUserService {
     const cpfExist = await usersRepository.findByCpf(cpf);
 
     if (cpfExist) {
-      throw new ApiError(401, true, 'CPF já cadastrado');
+      throw new AppError('User already exists.', StatusCodes.CONFLICT);
     }
 
     const hashedPassowrd = await hash(password, 7);

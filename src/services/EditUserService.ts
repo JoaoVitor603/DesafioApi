@@ -1,7 +1,8 @@
+import { StatusCodes } from 'http-status-codes';
 import { getCustomRepository } from 'typeorm';
 import Users from '../database/entities/User.Entity';
 import { UserRepository } from '../database/repositories/UserRepository';
-import ApiError from '../utils/apiError.utils';
+import AppError from '../utils/AppError';
 
 interface IRequest {
   id: string;
@@ -15,9 +16,8 @@ class EditUserService {
     const user = await usersRepository.findOne(id);
 
     if (!user) {
-      throw new ApiError(401, false, 'Usuário não encontrado por id');
+      throw new AppError('User not found.', StatusCodes.NOT_FOUND);
     }
-
     user.admin = admin;
     user.observation = observation;
 

@@ -1,9 +1,11 @@
 import { compare } from 'bcrypt';
 import { getCustomRepository } from 'typeorm';
+import { StatusCodes } from 'http-status-codes';
 import { signJwt } from '../../utils/jwt.utils';
 import Users from '../../database/entities/User.Entity';
 import { UserRepository } from '../../database/repositories/UserRepository';
-import ApiError from '../../utils/apiError.utils';
+
+import AppError from '../../utils/AppError';
 
 interface IRequest {
   id?: string;
@@ -22,13 +24,19 @@ class CreateUserSessionService {
     const user = await usersRepository.findByCpf(cpf);
 
     if (!user) {
-      throw new ApiError(401, false, 'Incorrect cpf/ combination .');
+      throw new AppError(
+        'Incorrect email/password combination.',
+        StatusCodes.UNAUTHORIZED
+      );
     }
 
     const passwordConfirm = await compare(password, user.password);
 
     if (!passwordConfirm) {
-      throw new ApiError(401, false, 'Incorrect password.');
+      throw new AppError(
+        'Incorrect email/password combination.',
+        StatusCodes.UNAUTHORIZED
+      );
     }
 
     const token = signJwt({ sub: user.id, admin: user.admin });

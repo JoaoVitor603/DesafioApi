@@ -1,8 +1,6 @@
 import { Router } from 'express';
 import { celebrate, Joi, Segments } from 'celebrate';
 import UserController from '../../controllers/user.controller';
-import isAuthenticated from '../../middlewares/isAuthenticated';
-
 import isAdmin from '../../middlewares/authAdmin';
 
 const UserRouter = Router();
@@ -26,7 +24,7 @@ UserRouter.post(
       admin: Joi.bool(),
     },
   }),
-
+  isAdmin,
   userController.create
 );
 // Utilizar Celebrate com o metodo put causa erro Error: data and salt arguments required

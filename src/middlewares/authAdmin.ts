@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import { verify } from 'jsonwebtoken';
-import ApiError from '../utils/apiError.utils';
+import { StatusCodes } from 'http-status-codes';
 import config from '../config/config';
+import AppError from '../utils/AppError';
 
 interface TokenPayload {
   admin: boolean;
@@ -16,7 +17,7 @@ export default function isAdmin(
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {
-    throw new ApiError(402, true, 'JWT Token is missing.');
+    throw new AppError('JWT Token is missing', StatusCodes.UNAUTHORIZED);
   }
   // Bearer sdlkfjsldkfjlsjfffdklfjdflksjflkjfdlk3405905
   const [, token] = authHeader.split(' ');
@@ -36,8 +37,8 @@ export default function isAdmin(
       return next();
     }
     // Sem a esse api error a requisição fica sendo enviada sempre
-    throw new ApiError(402, true, '');
+    throw new AppError('', StatusCodes.UNAUTHORIZED);
   } catch {
-    throw new ApiError(402, true, 'User is not admin.');
+    throw new AppError('User is not admin', StatusCodes.UNAUTHORIZED);
   }
 }

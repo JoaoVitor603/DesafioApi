@@ -1,10 +1,8 @@
 import 'express-async-errors';
 
 export default class ApiError extends Error {
-  statusCode: number;
-
   constructor(
-    statusCode: number,
+    public statusCode: number,
     private isOperational: boolean = true,
     message: string,
     stack: string = ''

@@ -1,6 +1,7 @@
+import { StatusCodes } from 'http-status-codes';
 import { getCustomRepository } from 'typeorm';
 import { UserRepository } from '../database/repositories/UserRepository';
-import ApiError from '../utils/apiError.utils';
+import AppError from '../utils/AppError';
 
 interface IRequest {
   id: string;
@@ -12,7 +13,7 @@ class DeleteUserService {
     const user = await userRepository.findOne(id);
 
     if (!user) {
-      throw new ApiError(401, true, 'User not found');
+      throw new AppError('User not found.', StatusCodes.NOT_FOUND);
     }
     await userRepository.remove(user);
   }
